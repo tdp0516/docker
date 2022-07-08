@@ -10,17 +10,18 @@ services:
   zookeeper:
     image: bitnami/zookeeper
     ports:
-      - 2181:2181
+      - "2181:2181"
     networks:
       - kafka-net
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+    restart: always
         
   kafka:
     image: bitnami/kafka
     ports:
-      - 9092:9092
-      - 29092:29092
+      - "9092:9092"
+      - "29092:29092"
     networks:
       - kafka-net
     depends_on:
@@ -34,14 +35,16 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_HOST://kafka:29092
+    restart: always
         
   kafdrop:
     image: obsidiandynamics/kafdrop
     ports:
-      - 9000:9000
+      - "9000:9000"
     networks:
       - kafka-net
     environment:
       - KAFKA_BROKERCONNECT=kafka:29092
     depends_on:
       - kafka
+    restart: always
